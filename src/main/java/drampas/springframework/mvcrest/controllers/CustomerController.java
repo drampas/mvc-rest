@@ -31,4 +31,19 @@ public class CustomerController {
         CustomerDTO returnCustomer=customerService.createNewCustomer(customerDTO);
         return new ResponseEntity<CustomerDTO>(returnCustomer,HttpStatus.CREATED);
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable String id,@RequestBody CustomerDTO customerDTO) {
+        CustomerDTO returnCustomer = customerService.updateCustomer(Long.valueOf(id),customerDTO);
+        return new ResponseEntity<CustomerDTO>(returnCustomer, HttpStatus.OK);
+    }
+    @PatchMapping("/{id}")
+    public ResponseEntity<CustomerDTO> patchCustomer(@PathVariable String id,@RequestBody CustomerDTO customerDTO){
+        CustomerDTO returnCustomer = customerService.patchCustomer(Long.valueOf(id),customerDTO);
+        return new ResponseEntity<CustomerDTO>(returnCustomer, HttpStatus.OK);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable String id){
+        customerService.deleteCustomerById(Long.valueOf(id));
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
 }

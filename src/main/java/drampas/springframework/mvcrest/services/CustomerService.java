@@ -5,8 +5,10 @@ import drampas.springframework.mvcrest.api.model.CustomerDTO;
 import java.util.List;
 
 public interface CustomerService {
-    public List<CustomerDTO> getCustomers();
-    public CustomerDTO getCustomerById(Long id);
-    public CustomerDTO createNewCustomer(CustomerDTO customerDTO);
-
+    List<CustomerDTO> getCustomers();
+    CustomerDTO getCustomerById(Long id);
+    CustomerDTO createNewCustomer(CustomerDTO customerDTO);
+    CustomerDTO updateCustomer(Long id,CustomerDTO customerDTO);
+    CustomerDTO patchCustomer(Long id,CustomerDTO customerDTO);
+    void deleteCustomerById(Long id);
 }
