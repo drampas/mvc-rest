@@ -2,6 +2,7 @@ package drampas.springframework.mvcrest.services;
 
 import drampas.springframework.mvcrest.api.mapper.CustomerMapper;
 import drampas.springframework.mvcrest.api.model.CustomerDTO;
+import drampas.springframework.mvcrest.controllers.CustomerController;
 import drampas.springframework.mvcrest.domain.Customer;
 import drampas.springframework.mvcrest.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class CustomerServiceImpl implements CustomerService{
         return customerRepository.findAll().stream()
                 .map(customer -> {
                     CustomerDTO customerDTO=customerMapper.customerToCustomerDTO(customer);
-                    customerDTO.setCustomerUri("/api/customers/"+customer.getId());
+                    customerDTO.setCustomerUri(getCustomerUrl(customer.getId()));
                     return customerDTO;
                 })
                 .collect(Collectors.toList());
@@ -35,10 +36,10 @@ public class CustomerServiceImpl implements CustomerService{
         Optional<Customer> optionalCustomer=customerRepository.findById(id);
         if(optionalCustomer.isPresent()){
             CustomerDTO customerDTO=customerMapper.customerToCustomerDTO(optionalCustomer.get());
-            customerDTO.setCustomerUri("/api/customers/"+customerDTO.getId());
+            customerDTO.setCustomerUri(getCustomerUrl(customerDTO.getId()));
             return customerDTO;
         }else {
-            throw new RuntimeException("Customer not found,id: " + Long.valueOf(id));
+            throw new ResourceNotFoundException("Customer not found,id: " + id);
         }
     }
     @Override
@@ -46,7 +47,7 @@ public class CustomerServiceImpl implements CustomerService{
         Customer customer=customerMapper.customerDTOToCustomer(customerDTO);
         Customer savedCustomer=customerRepository.save(customer);
         CustomerDTO returnCustomer=customerMapper.customerToCustomerDTO(savedCustomer);
-        returnCustomer.setCustomerUri("api/customers/"+savedCustomer.getId());
+        returnCustomer.setCustomerUri(getCustomerUrl(savedCustomer.getId()));
         return returnCustomer;
     }
     @Override
@@ -55,7 +56,7 @@ public class CustomerServiceImpl implements CustomerService{
         customer.setId(id);
         Customer savedCustomer=customerRepository.save(customer);
         CustomerDTO returnCustomer=customerMapper.customerToCustomerDTO(savedCustomer);
-        returnCustomer.setCustomerUri("api/customers/"+savedCustomer.getId());
+        returnCustomer.setCustomerUri(getCustomerUrl(savedCustomer.getId()));
         return returnCustomer;
     }
 
@@ -71,15 +72,17 @@ public class CustomerServiceImpl implements CustomerService{
                 customer.setLastName(customerDTO.getLastName());
             }
             CustomerDTO returnCustomer=customerMapper.customerToCustomerDTO(customerRepository.save(customer));
-            returnCustomer.setCustomerUri("/api/customer/" + id);
+            returnCustomer.setCustomerUri(getCustomerUrl(id));
             return returnCustomer;
         }else {
-            throw new RuntimeException("Customer not found,id:"+id);
-            //todo handle the exception
+            throw new ResourceNotFoundException("Customer not found,id:"+id);
         }
     }
     @Override
     public void deleteCustomerById(Long id) {
         customerRepository.deleteById(id);
+    }
+    private String getCustomerUrl(Long id){
+        return CustomerController.BASE_URL+"/"+id;
     }
 }
