@@ -2,8 +2,10 @@ package drampas.springframework.mvcrest.bootstrap;
 
 import drampas.springframework.mvcrest.domain.Category;
 import drampas.springframework.mvcrest.domain.Customer;
+import drampas.springframework.mvcrest.domain.Vendor;
 import drampas.springframework.mvcrest.repositories.CategoryRepository;
 import drampas.springframework.mvcrest.repositories.CustomerRepository;
+import drampas.springframework.mvcrest.repositories.VendorRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -11,10 +13,12 @@ import org.springframework.stereotype.Component;
 public class Bootstrap implements CommandLineRunner {
     private final CategoryRepository categoryRepository;
     private final CustomerRepository customerRepository;
+    private final VendorRepository vendorRepository;
 
-    public Bootstrap(CategoryRepository categoryRepository, CustomerRepository customerRepository) {
+    public Bootstrap(CategoryRepository categoryRepository, CustomerRepository customerRepository, VendorRepository vendorRepository) {
         this.categoryRepository = categoryRepository;
         this.customerRepository = customerRepository;
+        this.vendorRepository = vendorRepository;
     }
 
     @Override
@@ -43,6 +47,7 @@ public class Bootstrap implements CommandLineRunner {
 
         System.out.println("Categories loaded = " + categoryRepository.count() );
         loadCustomers();
+        loadVendors();
     }
     private void loadCustomers(){
         Customer customer1=new Customer();
@@ -68,5 +73,15 @@ public class Bootstrap implements CommandLineRunner {
         customerRepository.save(customer5);
 
         System.out.println("Customers loaded:"+customerRepository.count());
+    }
+    private void loadVendors() {
+        Vendor vendor1 = new Vendor();
+        vendor1.setName("Vendor 1");
+        vendorRepository.save(vendor1);
+
+        Vendor vendor2 = new Vendor();
+        vendor2.setName("Vendor 2");
+        vendorRepository.save(vendor2);
+
     }
 }

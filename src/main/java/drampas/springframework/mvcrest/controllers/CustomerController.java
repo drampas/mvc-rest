@@ -23,7 +23,7 @@ public class CustomerController {
         return new ResponseEntity<CustomerListDTO>(customers, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerDTO> getCustomerByLastName(@PathVariable String id){
+    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable String id){
         CustomerDTO customer=customerService.getCustomerById(Long.valueOf(id));
         return new ResponseEntity<CustomerDTO>(customer, HttpStatus.OK);
     }
