@@ -41,7 +41,7 @@ class CustomerControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void getCustomerByLastName() throws Exception {
+    void getCustomerById() throws Exception {
         CustomerDTO customerDTO=new CustomerDTO(1L,"John","Doe","/api/customers/1");
         Mockito.when(customerService.getCustomerById(ArgumentMatchers.anyLong())).thenReturn(customerDTO);
         mvc.perform(get("/api/customers/1").contentType(MediaType.APPLICATION_JSON))
